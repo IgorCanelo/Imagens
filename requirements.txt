@@ -4,3 +4,4 @@ boto3
 Pillow
 requests
 python-dotenv
+openpyxl
