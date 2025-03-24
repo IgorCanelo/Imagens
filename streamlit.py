@@ -5,7 +5,17 @@ from PIL import Image
 import requests
 from io import BytesIO
 import os
+from dotenv import load_dotenv
+from concurrent.futures import ThreadPoolExecutor
 
+load_dotenv()
+
+
+
+def fetch_and_resize_image(url, size=(800, 800)):
+    response = requests.get(url)
+    img = Image.open(BytesIO(response.content))
+    return img.resize(size, Image.LANCZOS)
 
 def inicial():
 
@@ -58,27 +68,27 @@ def url_s3(pasta):
 def loja_boa():
     st.markdown("<h1 style='text-align: center;'>Lojas boas com uma Classificação de nota 10:</h1>", unsafe_allow_html=True)
     fotos_boas = url_s3("boas")
-
-
-    col1, col2, col3 = st.columns(3)
     
-    def resize_image(image_url, size=(800, 800)):
-        response = requests.get(image_url)
-        img = Image.open(BytesIO(response.content))
-        img = img.resize(size, Image.LANCZOS)
-        return img
+    col1, col2, col3 = st.columns(3)
     
     # Certifique-se de que há pelo menos 3 imagens disponíveis
     if len(fotos_boas) >= 3:
+        image_urls = fotos_boas[:3]
+        
+        # Baixar e redimensionar todas as imagens de uma vez usando ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=3) as executor:
+            resized_images = list(executor.map(
+                lambda url: fetch_and_resize_image(url), 
+                image_urls
+            ))
+        
+        # Exibir as imagens já processadas
         with col1:
-            img1 = resize_image(fotos_boas[0])
-            st.image(img1, caption="Exemplo 1", use_container_width=True)
+            st.image(resized_images[0], caption="Exemplo 1", use_container_width=True)
         with col2:
-            img2 = resize_image(fotos_boas[1])
-            st.image(img2, caption="Exemplo 2", use_container_width=True)
+            st.image(resized_images[1], caption="Exemplo 2", use_container_width=True)
         with col3:
-            img3 = resize_image(fotos_boas[2])
-            st.image(img3, caption="Exemplo 3", use_container_width=True)
+            st.image(resized_images[2], caption="Exemplo 3", use_container_width=True)
 
 
 
@@ -86,36 +96,26 @@ def loja_ruim():
     st.markdown("<h1 style='text-align: center;'>Lojas ruins com uma Classificação de nota 2:</h1>", unsafe_allow_html=True)
     fotos_ruins = url_s3("ruins")
     
-    # Criar três colunas para as imagens
     col1, col2, col3 = st.columns(3)
-
-    def resize_image(image_url, size=(800, 800)):
-        response = requests.get(image_url)
-        img = Image.open(BytesIO(response.content))
-        img = img.resize(size, Image.LANCZOS)
-        return img
     
     # Certifique-se de que há pelo menos 3 imagens disponíveis
     if len(fotos_ruins) >= 3:
+        image_urls = fotos_ruins[:3]
+        
+        # Baixar e redimensionar todas as imagens de uma vez usando ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=3) as executor:
+            resized_images = list(executor.map(
+                lambda url: fetch_and_resize_image(url), 
+                image_urls
+            ))
+        
+        # Exibir as imagens já processadas
         with col1:
-            img1 = resize_image(fotos_ruins[0])
-            st.image(img1, caption="Exemplo 1", use_container_width=True)
+            st.image(resized_images[0], caption="Exemplo 1", use_container_width=True)
         with col2:
-            img2 = resize_image(fotos_ruins[1])
-            st.image(img2, caption="Exemplo 2", use_container_width=True)
+            st.image(resized_images[1], caption="Exemplo 2", use_container_width=True)
         with col3:
-            img3 = resize_image(fotos_ruins[2])
-            st.image(img3, caption="Exemplo 3", use_container_width=True)
-    elif len(fotos_ruins) == 2:
-        with col1:
-            st.image(fotos_ruins[0], caption="Exemplo 1", use_container_width=True)
-        with col2:
-            st.image(fotos_ruins[1], caption="Exemplo 2", use_container_width=True)
-    elif len(fotos_ruins) == 1:
-        with col1:
-            st.image(fotos_ruins[0], caption="Exemplo 1", use_container_width=True)
-    else:
-        st.warning("Não há imagens de boas lojas disponíveis.")
+            st.image(resized_images[2], caption="Exemplo 3", use_container_width=True)
 
 
 def avaliacao():
@@ -155,7 +155,7 @@ def avaliacao():
         row = df.iloc[st.session_state.index]
         
         # Exibir a imagem em toda a largura
-        st.image(row['URL'], caption=f"Foto {row['FOTO']}", use_container_width=True)
+        st.image(row['URL'], caption=f"Foto {row['FOTO']}", width=450)#use_container_width=True
         
         # Exibir informações da imagem abaixo, em colunas para organização
         # info_col1, info_col2, info_col3 = st.columns(3)
