@@ -121,6 +121,10 @@ def loja_ruim():
 def avaliacao():
     # Criar ou carregar o DataFrame (pode substituir pelo seu método de carregamento real)
     df = pd.read_excel("fotos_escolhidas.xlsx")
+    df = df.sample(frac=1, random_state=42)
+    # Se quiser redefinir o índice após desordenar
+    df = df.reset_index(drop=True)
+
     df["URL"] = "https://dk2a9ia2gb2sz.cloudfront.net/rotas/" + df["filename"]
     # df = pd.DataFrame({
     #     'MAQUINA': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
