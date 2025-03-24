@@ -120,23 +120,25 @@ def loja_ruim():
 
 def avaliacao():
     # Criar ou carregar o DataFrame (pode substituir pelo seu método de carregamento real)
-    df = pd.DataFrame({
-        'MAQUINA': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        'FOTO': ['foto1.jpg', 'foto2.jpg', 'foto3.jpg', 'foto4.jpg', 'foto5.jpg', 'foto6.jpg', 'foto7.jpg', 'foto8.jpg', 'foto9.jpg', 'foto10.jpg'],
-        'PICKLIST': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
-        'URL': [
-            'https://dk2a9ia2gb2sz.cloudfront.net/rotas/f730e85ec34fe81ba9c2459be2e5eed3.jpg',
-            'https://dk2a9ia2gb2sz.cloudfront.net/rotas/76f38a68ba24eef8081f50feff915c66.jpg',
-            'https://dk2a9ia2gb2sz.cloudfront.net/rotas/1121c88de33a47a4c94d3ff10f206098.jpg',
-            'https://dk2a9ia2gb2sz.cloudfront.net/rotas/8b45a33a8610fd88d56408a831c534f9.jpg',
-            'https://dk2a9ia2gb2sz.cloudfront.net/rotas/291cf569df680a87ce4626ff25208ee4.jpg',
-            'https://dk2a9ia2gb2sz.cloudfront.net/rotas/69d31928c9aff6987dfd1f9bbe744a3b.jpg',
-            'https://dk2a9ia2gb2sz.cloudfront.net/rotas/9a4b0312fad903e0802eaad029c0be4c.jpg',
-            'https://dk2a9ia2gb2sz.cloudfront.net/rotas/58f77338a7c17a3409e78af6b56f776b.jpg',
-            'https://dk2a9ia2gb2sz.cloudfront.net/rotas/693e5cbf7dba9dcfc7145f7b7e4476de.jpg',
-            'https://dk2a9ia2gb2sz.cloudfront.net/rotas/ef2889d011805fe50d97e7fde85f34db.jpg'
-        ]
-    })
+    df = pd.read_excel("fotos_escolhidas.xlsx")
+    df["URL"] = "https://dk2a9ia2gb2sz.cloudfront.net/rotas/" + df["filename"]
+    # df = pd.DataFrame({
+    #     'MAQUINA': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    #     'FOTO': ['foto1.jpg', 'foto2.jpg', 'foto3.jpg', 'foto4.jpg', 'foto5.jpg', 'foto6.jpg', 'foto7.jpg', 'foto8.jpg', 'foto9.jpg', 'foto10.jpg'],
+    #     'PICKLIST': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+    #     'URL': [
+    #         'https://dk2a9ia2gb2sz.cloudfront.net/rotas/f730e85ec34fe81ba9c2459be2e5eed3.jpg',
+    #         'https://dk2a9ia2gb2sz.cloudfront.net/rotas/76f38a68ba24eef8081f50feff915c66.jpg',
+    #         'https://dk2a9ia2gb2sz.cloudfront.net/rotas/1121c88de33a47a4c94d3ff10f206098.jpg',
+    #         'https://dk2a9ia2gb2sz.cloudfront.net/rotas/8b45a33a8610fd88d56408a831c534f9.jpg',
+    #         'https://dk2a9ia2gb2sz.cloudfront.net/rotas/291cf569df680a87ce4626ff25208ee4.jpg',
+    #         'https://dk2a9ia2gb2sz.cloudfront.net/rotas/69d31928c9aff6987dfd1f9bbe744a3b.jpg',
+    #         'https://dk2a9ia2gb2sz.cloudfront.net/rotas/9a4b0312fad903e0802eaad029c0be4c.jpg',
+    #         'https://dk2a9ia2gb2sz.cloudfront.net/rotas/58f77338a7c17a3409e78af6b56f776b.jpg',
+    #         'https://dk2a9ia2gb2sz.cloudfront.net/rotas/693e5cbf7dba9dcfc7145f7b7e4476de.jpg',
+    #         'https://dk2a9ia2gb2sz.cloudfront.net/rotas/ef2889d011805fe50d97e7fde85f34db.jpg'
+    #     ]
+    # })
     
     # Inicializar variáveis de estado se ainda não existirem
     if 'index' not in st.session_state:
@@ -155,7 +157,7 @@ def avaliacao():
         row = df.iloc[st.session_state.index]
         
         # Exibir a imagem em toda a largura
-        st.image(row['URL'], caption=f"Foto {row['FOTO']}", width=450)#use_container_width=True
+        st.image(row['URL'], caption=f"Foto {row['filename']}", width=450)#use_container_width=True
         
         # Exibir informações da imagem abaixo, em colunas para organização
         # info_col1, info_col2, info_col3 = st.columns(3)
