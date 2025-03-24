@@ -67,55 +67,55 @@ def url_s3(pasta):
 
 def loja_boa():
     st.markdown("<h1 style='text-align: center;'>Lojas boas com uma Classificação de nota 10:</h1>", unsafe_allow_html=True)
-    # fotos_boas = url_s3("boas")
+    fotos_boas = ["https://teste-gpt-imagem.s3.us-east-2.amazonaws.com/boas/boa_9.jpeg", "https://teste-gpt-imagem.s3.us-east-2.amazonaws.com/boas/2.jpg","https://teste-gpt-imagem.s3.us-east-2.amazonaws.com/boas/13.jpg"]
     
     col1, col2, col3 = st.columns(3)
     
-    # Certifique-se de que há pelo menos 3 imagens disponíveis
-    # if len(fotos_boas) >= 3:
-    #     image_urls = fotos_boas[:3]
+    #Certifique-se de que há pelo menos 3 imagens disponíveis
+    if len(fotos_boas) >= 3:
+        image_urls = fotos_boas[:3]
         
-    #     # Baixar e redimensionar todas as imagens de uma vez usando ThreadPoolExecutor
-    #     with ThreadPoolExecutor(max_workers=3) as executor:
-    #         resized_images = list(executor.map(
-    #             lambda url: fetch_and_resize_image(url), 
-    #             image_urls
-    #         ))
+        # Baixar e redimensionar todas as imagens de uma vez usando ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=3) as executor:
+            resized_images = list(executor.map(
+                lambda url: fetch_and_resize_image(url), 
+                image_urls
+            ))
         
         # Exibir as imagens já processadas
     with col1:
-        st.image("https://teste-gpt-imagem.s3.us-east-2.amazonaws.com/boas/boa_9.jpeg", caption="Exemplo 1", use_container_width=True)
+        st.image(resized_images[0], caption="Exemplo 1", use_container_width=True)
     with col2:
-        st.image("https://teste-gpt-imagem.s3.us-east-2.amazonaws.com/boas/2.jpg", caption="Exemplo 2", use_container_width=True)
+        st.image(resized_images[1], caption="Exemplo 2", use_container_width=True)
     with col3:
-        st.image("https://teste-gpt-imagem.s3.us-east-2.amazonaws.com/boas/13.jpg", caption="Exemplo 3", use_container_width=True)
+        st.image(resized_images[2], caption="Exemplo 3", use_container_width=True)
 
 
 
 def loja_ruim():
     st.markdown("<h1 style='text-align: center;'>Lojas ruins com uma Classificação de nota 2:</h1>", unsafe_allow_html=True)
-    # fotos_ruins = url_s3("ruins")
+    fotos_ruins = ["https://teste-gpt-imagem.s3.us-east-2.amazonaws.com/ruins/queéisso.jpg", "https://teste-gpt-imagem.s3.us-east-2.amazonaws.com/ruins/ruim_12432.jpg", "https://teste-gpt-imagem.s3.us-east-2.amazonaws.com/ruins/seloco.jpg"]
     
     col1, col2, col3 = st.columns(3)
     
     # Certifique-se de que há pelo menos 3 imagens disponíveis
-    # if len(fotos_ruins) >= 3:
-    #     image_urls = fotos_ruins[:3]
+    if len(fotos_ruins) >= 3:
+        image_urls = fotos_ruins[:3]
         
         # Baixar e redimensionar todas as imagens de uma vez usando ThreadPoolExecutor
-        # with ThreadPoolExecutor(max_workers=3) as executor:
-        #     resized_images = list(executor.map(
-        #         lambda url: fetch_and_resize_image(url), 
-        #         image_urls
-        #     ))
+        with ThreadPoolExecutor(max_workers=3) as executor:
+            resized_images = list(executor.map(
+                lambda url: fetch_and_resize_image(url), 
+                image_urls
+            ))
         
         # Exibir as imagens já processadas
     with col1:
-        st.image("https://teste-gpt-imagem.s3.us-east-2.amazonaws.com/ruins/queéisso.jpg", caption="Exemplo 1", use_container_width=True)
+        st.image(resized_images[0], caption="Exemplo 1", use_container_width=True)
     with col2:
-        st.image("https://teste-gpt-imagem.s3.us-east-2.amazonaws.com/ruins/ruim_12432.jpg", caption="Exemplo 2", use_container_width=True)
+        st.image(resized_images[1], caption="Exemplo 2", use_container_width=True)
     with col3:
-        st.image("https://teste-gpt-imagem.s3.us-east-2.amazonaws.com/ruins/seloco.jpg", caption="Exemplo 3", use_container_width=True)
+        st.image(resized_images[2], caption="Exemplo 3", use_container_width=True)
 
 
 def avaliacao():
